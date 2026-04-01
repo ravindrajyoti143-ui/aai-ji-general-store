@@ -1,0 +1,66 @@
+{
+  "playStore": {
+    "appInfo": {
+      "title": "Aai Ji Mini Market",
+      "shortDescription": "Your trusted neighborhood mini market. Order groceries online with free delivery!",
+      "fullDescription": "Aai Ji Mini Market - Your One-Stop Shop for Daily Needs!\n\nWelcome to Aai Ji Mini Market, your trusted neighborhood store now at your fingertips! We bring you the convenience of online grocery shopping with the promise of quality and freshness.\n\n🛒 Why Choose Aai Ji Mini Market?\n\n• 📦 59+ Quality Products: From grains to household items, we have everything you need\n• 🚚 Free Delivery: Get free delivery within 5km radius\n• 💰 Best Prices: Competitive pricing on all products\n• ⚡ Quick Delivery: 30-45 minute delivery time\n• 🏪 Trusted Store: Your reliable neighborhood mini market\n\n📱 App Features:\n\n• 🔍 Easy Search: Find products quickly with our smart search\n• 📱 Category Browsing: 9 organized categories for easy shopping\n• 🛒 Shopping Cart: Add multiple items and manage your cart\n• 💳 Secure Checkout: Safe and simple ordering process\n• 📞 Direct Contact: Call store directly for any queries\n• 📦 Order Tracking: Know when your order will arrive\n\n🏪 Product Categories:\n\n🌾 Grains & Staples: Rice, Wheat, Atta, Maida, Sooji, Poha, Besan\n🫘 Dals & Pulses: Toor Dal, Moong Dal, Masoor Dal, Chana Dal, Urad Dal, Rajma, Kabuli Chana\n🛢️ Oil & Ghee: Sunflower Oil, Mustard Oil, Groundnut Oil, Ghee, Butter\n🧂 Spices & Masala: Turmeric, Chilli Powder, Coriander, Garam Masala, Jeera, Salt\n🍪 Snacks & Foods: Biscuits, Chips, Kurkure, Maggi, Samosa, Namkeen\n🥤 Beverages: Tea, Coffee, Soft Drinks, Juices, Milk\n🥛 Dairy Products: Milk, Curd, Paneer, Cheese, Buttermilk\n🧼 Personal Care: Soap, Shampoo, Toothpaste, Hair Oil, Face Wash\n🧹 Household: Detergent, Dishwash, Floor Cleaner, Garbage Bags\n\n🚚 Delivery Information:\n\n• ✅ Free delivery within 5km radius\n• 📦 Minimum order amount: ₹500\n• ⏰ Delivery time: 30-45 minutes\n• 📍 Delivery areas: Main Road, Colony Areas, Outskirts\n\n💳 Payment Options:\n\n• 💵 Cash on Delivery\n• 📱 UPI Payment\n\n📞 Customer Support:\n\n• 🛒 24/7 Order Support\n• 📞 Direct Store Contact\n• 🔄 Easy Returns and Refunds\n\n🎯 Why Download Aai Ji Mini Market?\n\n✅ Convenience: Shop from home, save time\n✅ Quality: Fresh products, guaranteed quality\n✅ Savings: Best prices and regular offers\n✅ Trust: Your trusted neighborhood store\n✅ Service: Fast and reliable delivery\n\n📲 Download the Aai Ji Mini Market app today and experience the convenience of online grocery shopping with the trust of your local store!\n\n🏪 Aai Ji Mini Market - Bringing the store to your doorstep!\n\nKeywords: grocery, online shopping, mini market, daily needs, food delivery, vegetables, fruits, milk, bread, eggs, rice, atta, oil, ghee, spices, snacks, beverages, personal care, household, free delivery, quick delivery, local store, neighborhood store",
+      "category": "SHOPPING",
+      "contentRating": "Everyone",
+      "tags": ["grocery", "shopping", "delivery", "mini market", "daily needs", "food", "online store"]
+    },
+    "graphics": {
+      "icon": {
+        "description": "App icon showing a mini market store with green theme and shopping cart",
+        "colors": ["#28a745", "#ffffff", "#ffc107"]
+      },
+      "screenshots": [
+        {
+          "title": "Home Screen",
+          "description": "Browse products by category with featured items"
+        },
+        {
+          "title": "Product Categories",
+          "description": "9 organized categories for easy shopping"
+        },
+        {
+          "title": "Product Details",
+          "description": "View product details with prices and stock"
+        },
+        {
+          "title": "Shopping Cart",
+          "description": "Manage your cart and place orders"
+        },
+        {
+          "title": "Order Tracking",
+          "description": "Track your orders and delivery status"
+        }
+      ]
+    },
+    "pricing": {
+      "model": "FREE",
+      "hasInAppPurchases": false,
+      "hasAds": false
+    },
+    "requirements": {
+      "androidVersion": "5.0",
+      "size": "15MB",
+      "permissions": [
+        "INTERNET",
+        "CALL_PHONE",
+        "ACCESS_NETWORK_STATE",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ]
+    },
+    "contact": {
+      "website": "https://your-website.com",
+      "email": "support@aaijimini.com",
+      "phone": "+91 98765 43210",
+      "address": "Main Road, Your City, PIN: 123456"
+    },
+    "releaseNotes": {
+      "version": "1.0.0",
+      "notes": "🎉 Initial Release!\n\n✨ Features:\n• 59+ quality products\n• 9 organized categories\n• Free delivery within 5km\n• Secure ordering system\n• Order tracking\n• Direct store contact\n• Customer support\n\n🛒 Start shopping today!"
+    }
+  }
+}

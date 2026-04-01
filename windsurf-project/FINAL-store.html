@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Aai Ji Mini Mart - Desktop Store</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body { font-family: Arial, sans-serif; background: #f8f9fa; margin: 0; }
+        .header { background: linear-gradient(135deg, #28a745, #20c997); color: white; padding: 30px; text-align: center; }
+        .store-name { font-size: 2.5em; font-weight: bold; margin-bottom: 10px; }
+        .store-tagline { font-size: 1.2em; opacity: 0.9; margin-bottom: 20px; }
+        .header-actions { display: flex; justify-content: center; align-items: center; gap: 20px; max-width: 600px; margin: 0 auto; }
+        .search-box { flex: 1; padding: 12px; border: none; border-radius: 25px; background: rgba(255,255,255,0.2); color: white; }
+        .cart-btn { background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 12px 20px; border-radius: 25px; cursor: pointer; position: relative; text-decoration: none; }
+        .cart-count { position: absolute; top: -8px; right: -8px; background: #ffc107; color: #333; border-radius: 50%; width: 20px; height: 20px; display: flex; align-items: center; justify-content: center; font-size: 0.8em; font-weight: bold; }
+        .main-content { max-width: 1200px; margin: 0 auto; padding: 20px; }
+        .categories { background: white; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .section-title { font-size: 1.5em; font-weight: bold; margin-bottom: 15px; }
+        .category-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+        .category-pill { background: #f8f9fa; border: 1px solid #ddd; border-radius: 20px; padding: 8px 16px; cursor: pointer; }
+        .category-pill.active { background: #28a745; color: white; }
+        .products { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .products-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-top: 15px; }
+        .product-card { border: 1px solid #ddd; border-radius: 10px; overflow: hidden; transition: transform 0.3s ease; }
+        .product-card:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        .product-image { height: 150px; background: linear-gradient(45deg, #f8f9fa, #e9ecef); display: flex; align-items: center; justify-content: center; font-size: 3em; color: #666; }
+        .product-details { padding: 15px; }
+        .product-name { font-weight: bold; margin-bottom: 8px; }
+        .product-price { color: #28a745; font-weight: bold; font-size: 1.2em; margin-bottom: 5px; }
+        .product-unit { color: #666; font-size: 0.9em; margin-bottom: 15px; }
+        .product-actions { display: flex; gap: 10px; align-items: center; }
+        .quantity-control { display: flex; align-items: center; border: 1px solid #ddd; border-radius: 20px; overflow: hidden; }
+        .quantity-btn { background: #f8f9fa; border: none; width: 30px; height: 30px; cursor: pointer; }
+        .quantity-display { min-width: 30px; text-align: center; font-weight: bold; }
+        .add-to-cart-btn { background: #28a745; color: white; border: none; border-radius: 20px; padding: 8px 15px; cursor: pointer; margin-left: auto; }
+        .cart-modal { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: none; z-index: 2000; }
+        .cart-content { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); background: white; border-radius: 15px; padding: 30px; max-width: 600px; width: 90%; max-height: 80vh; overflow-y: auto; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #ddd; }
+        .cart-items { margin-bottom: 20px; }
+        .cart-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 0; border-bottom: 1px solid #f8f9fa; }
+        .cart-summary { padding-top: 20px; border-top: 2px solid #ddd; }
+        .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; }
+        .summary-row.total { font-size: 1.2em; font-weight: bold; color: #28a745; }
+        .checkout-btn { background: #28a745; color: white; border: none; border-radius: 25px; padding: 15px; width: 100%; font-weight: bold; cursor: pointer; }
+        .footer { background: #333; color: white; text-align: center; padding: 30px; margin-top: 30px; }
+        .contact-item { margin-bottom: 8px; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="store-name">🛒 Aai Ji Mini Mart</div>
+        <div class="store-tagline">Free delivery within 5km • Min order ₹500</div>
+        <div class="header-actions">
+            <div class="search-container">
+                <input type="text" class="search-box" placeholder="🔍 Search products..." id="searchInput">
+            </div>
+            <a href="#" class="cart-btn" id="cartBtn">
+                🛒 Cart 
+                <span class="cart-count" id="cartCount">0</span>
+            </a>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <section class="categories">
+            <h2 class="section-title">Shop by Category</h2>
+            <div class="category-pills">
+                <button class="category-pill active" data-category="all">All Items</button>
+                <button class="category-pill" data-category="grains">🌾 Grains & Staples</button>
+                <button class="category-pill" data-category="dals">🫘 Dals & Pulses</button>
+                <button class="category-pill" data-category="oil">🛢️ Oil & Ghee</button>
+                <button class="category-pill" data-category="spices">🧂 Spices & Masala</button>
+                <button class="category-pill" data-category="snacks">🍪 Snacks & Foods</button>
+                <button class="category-pill" data-category="beverages">🥤 Beverages</button>
+                <button class="category-pill" data-category="dairy">🥛 Dairy Products</button>
+                <button class="category-pill" data-category="personal">🧼 Personal Care</button>
+                <button class="category-pill" data-category="household">🧹 Household</button>
+            </div>
+        </section>
+
+        <section class="products">
+            <h2 class="section-title">Products</h2>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded here -->
+            </div>
+        </section>
+    </main>
+
+    <div class="cart-modal" id="cartModal">
+        <div class="cart-content">
+            <div class="cart-header">
+                <h2>Shopping Cart</h2>
+                <button class="close-cart" id="closeCart" style="background: none; border: none; font-size: 1.5em; cursor: pointer;">×</button>
+            </div>
+            <div class="cart-items" id="cartItems"></div>
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Subtotal:</span>
+                    <span id="subtotal">₹0</span>
+                </div>
+                <div class="summary-row">
+                    <span>Delivery Fee:</span>
+                    <span id="deliveryFee">FREE</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total:</span>
+                    <span id="totalAmount">₹0</span>
+                </div>
+                <button class="checkout-btn" id="checkoutBtn" disabled>
+                    Place Order
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="contact-info">
+            <h5>🛒 Aai Ji Mini Mart</h5>
+            <div class="contact-item">📞 +91 98765 43210</div>
+            <div class="contact-item">📧 info@aaijiminimart.com</div>
+            <div class="contact-item">🕐 8:00 AM - 9:00 PM</div>
+        </div>
+        <p style="margin-top: 20px; margin-bottom: 0;">© 2024 Aai Ji Mini Mart. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const products = [
+            { id: 1, name: "Basmati Rice", price: 120, unit: "1kg", category: "grains", icon: "🍚" },
+            { id: 2, name: "Sona Masoori Rice", price: 80, unit: "1kg", category: "grains", icon: "🍚" },
+            { id: 3, name: "Whole Wheat Atta", price: 60, unit: "1kg", category: "grains", icon: "🌾" },
+            { id: 4, name: "Toor Dal", price: 140, unit: "1kg", category: "dals", icon: "🫘" },
+            { id: 5, name: "Moong Dal", price: 120, unit: "1kg", category: "dals", icon: "🫘" },
+            { id: 6, name: "Refined Oil", price: 110, unit: "1L", category: "oil", icon: "🛢️" },
+            { id: 7, name: "Sunflower Oil", price: 140, unit: "1L", category: "oil", icon: "🛢️" },
+            { id: 8, name: "Ghee", price: 450, unit: "500g", category: "oil", icon: "🧈" },
+            { id: 9, name: "Turmeric Powder", price: 80, unit: "100g", category: "spices", icon: "🧂" },
+            { id: 10, name: "Red Chilli Powder", price: 70, unit: "100g", category: "spices", icon: "🌶️" },
+            { id: 11, name: "Salt", price: 20, unit: "1kg", category: "spices", icon: "🧂" },
+            { id: 12, name: "Sugar", price: 45, unit: "1kg", category: "spices", icon: "🍚" },
+            { id: 13, name: "Potato Chips", price: 40, unit: "100g", category: "snacks", icon: "🍪" },
+            { id: 14, name: "Biscuits", price: 30, unit: "200g", category: "snacks", icon: "🍪" },
+            { id: 15, name: "Tea Powder", price: 200, unit: "250g", category: "beverages", icon: "🍵" },
+            { id: 16, name: "Coffee Powder", price: 250, unit: "200g", category: "beverages", icon: "☕" },
+            { id: 17, name: "Milk", price: 55, unit: "1L", category: "beverages", icon: "🥛" },
+            { id: 18, name: "Curd", price: 50, unit: "500g", category: "dairy", icon: "🥛" },
+            { id: 19, name: "Paneer", price: 120, unit: "250g", category: "dairy", icon: "🧀" },
+            { id: 20, name: "Butter", price: 180, unit: "250g", category: "dairy", icon: "🧈" },
+            { id: 21, name: "Soap", price: 30, unit: "1pc", category: "personal", icon: "🧼" },
+            { id: 22, name: "Shampoo", price: 120, unit: "200ml", category: "personal", icon: "🧴" },
+            { id: 23, name: "Toothpaste", price: 80, unit: "100g", category: "personal", icon: "🦷" },
+            { id: 24, name: "Detergent Powder", price: 100, unit: "1kg", category: "household", icon: "🧹" },
+            { id: 25, name: "Dish Soap", price: 80, unit: "500ml", category: "household", icon: "🧴" }
+        ];
+
+        let cart = [];
+        let currentCategory = 'all';
+        let searchTerm = '';
+
+        function loadProducts() {
+            renderProducts();
+        }
+
+        function renderProducts() {
+            const container = document.getElementById('productsGrid');
+            let filteredProducts = products;
+
+            if (currentCategory !== 'all') {
+                filteredProducts = filteredProducts.filter(p => p.category === currentCategory);
+            }
+
+            if (searchTerm) {
+                filteredProducts = filteredProducts.filter(p => 
+                    p.name.toLowerCase().includes(searchTerm.toLowerCase())
+                );
+            }
+
+            container.innerHTML = filteredProducts.map(product => `
+                <div class="product-card">
+                    <div class="product-image">${product.icon}</div>
+                    <div class="product-details">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">₹${product.price}</div>
+                        <div class="product-unit">${product.unit}</div>
+                        <div class="product-actions">
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="updateQuantity(${product.id}, -1)">-</button>
+                                <div class="quantity-display" id="qty-${product.id}">0</div>
+                                <button class="quantity-btn" onclick="updateQuantity(${product.id}, 1)">+</button>
+                            </div>
+                            <button class="add-to-cart-btn" onclick="addToCart(${product.id})">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateQuantity(productId, change) {
+            const qtyDisplay = document.getElementById(`qty-${productId}`);
+            let currentQty = parseInt(qtyDisplay.textContent);
+            let newQty = Math.max(0, currentQty + change);
+            qtyDisplay.textContent = newQty;
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const qtyDisplay = document.getElementById(`qty-${productId}`);
+            const quantity = parseInt(qtyDisplay.textContent);
+
+            if (quantity === 0) {
+                alert('Please select quantity first');
+                return;
+            }
+
+            const existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += quantity;
+            } else {
+                cart.push({ ...product, quantity });
+            }
+
+            qtyDisplay.textContent = '0';
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartCount').textContent = totalItems;
+
+            const cartItemsContainer = document.getElementById('cartItems');
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = '<p style="text-align: center; color: #666;">Your cart is empty</p>';
+            } else {
+                cartItemsContainer.innerHTML = cart.map(item => `
+                    <div class="cart-item">
+                        <div class="cart-item-info">
+                            <div>${item.name}</div>
+                            <div style="color: #28a745;">₹${item.price} × ${item.quantity}</div>
+                        </div>
+                        <div class="product-actions">
+                            <div class="quantity-control">
+                                <button class="quantity-btn" onclick="updateCartQuantity(${item.id}, -1)">-</button>
+                                <div class="quantity-display">${item.quantity}</div>
+                                <button class="quantity-btn" onclick="updateCartQuantity(${item.id}, 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const deliveryFee = subtotal >= 500 ? 0 : 30;
+            const total = subtotal + deliveryFee;
+
+            document.getElementById('subtotal').textContent = `₹${subtotal}`;
+            document.getElementById('deliveryFee').textContent = deliveryFee === 0 ? 'FREE' : `₹${deliveryFee}`;
+            document.getElementById('totalAmount').textContent = `₹${total}`;
+
+            const checkoutBtn = document.getElementById('checkoutBtn');
+            if (subtotal < 500) {
+                checkoutBtn.disabled = true;
+                checkoutBtn.innerHTML = `Minimum order ₹500 (Add ₹${500 - subtotal} more)`;
+            } else {
+                checkoutBtn.disabled = false;
+                checkoutBtn.innerHTML = 'Place Order';
+            }
+        }
+
+        function updateCartQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(item => item.id !== productId);
+                }
+                updateCartUI();
+            }
+        }
+
+        function openCart() {
+            document.getElementById('cartModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+
+        function checkout() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            if (subtotal < 500) {
+                alert('Minimum order amount is ₹500');
+                return;
+            }
+
+            const orderId = 'ORD' + Date.now();
+            alert(`Order placed successfully!\nOrder ID: ${orderId}\nWe'll call you shortly to confirm.`);
+            
+            cart = [];
+            updateCartUI();
+            closeCart();
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            loadProducts();
+            updateCartUI();
+
+            document.querySelectorAll('.category-pill').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.category-pill').forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    currentCategory = this.dataset.category;
+                    renderProducts();
+                });
+            });
+
+            document.getElementById('searchInput').addEventListener('input', function(e) {
+                searchTerm = e.target.value;
+                renderProducts();
+            });
+
+            document.getElementById('cartBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                openCart();
+            });
+            document.getElementById('closeCart').addEventListener('click', closeCart);
+            document.getElementById('checkoutBtn').addEventListener('click', checkout);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Aai Ji General Store</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="admin-dashboard.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="bg-dark text-white py-3">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <h1><i class="fas fa-cog"></i> Admin Panel - Aai Ji Mini Mart</h1>
+                    <p class="mb-0">Manage Your Store Products & Orders</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <button class="btn btn-light me-2" onclick="location.href='index.html'">
+                        <i class="fas fa-store"></i> View Store
+                    </button>
+                    <button class="btn btn-success" onclick="location.href='store.html'">
+                        <i class="fas fa-globe"></i> Live Website
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <div class="container mt-4">
+        <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="products-tab" data-bs-toggle="tab" data-bs-target="#products" type="button">
+                    <i class="fas fa-boxes"></i> Products Management
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="orders-tab" data-bs-toggle="tab" data-bs-target="#orders" type="button">
+                    <i class="fas fa-shopping-cart"></i> Orders
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="analytics-tab" data-bs-toggle="tab" data-bs-target="#analytics" type="button">
+                    <i class="fas fa-chart-bar"></i> Analytics
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button">
+                    <i class="fas fa-cog"></i> Settings
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="adminTabsContent">
+            <!-- Products Management Tab -->
+            <div class="tab-pane fade show active" id="products" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center my-4">
+                    <h2>Products Management</h2>
+                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+                        <i class="fas fa-plus"></i> Add New Product
+                    </button>
+                </div>
+
+                <!-- Search and Filter -->
+                <div class="row mb-4">
+                    <div class="col-md-4">
+                        <input type="text" class="form-control" id="productSearch" placeholder="Search products...">
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="categoryFilter">
+                            <option value="">All Categories</option>
+                            <option value="grains">Grains & Staples</option>
+                            <option value="dals">Dals & Pulses</option>
+                            <option value="oil">Oil & Ghee</option>
+                            <option value="spices">Spices & Masala</option>
+                            <option value="snacks">Snacks & Foods</option>
+                            <option value="beverages">Beverages</option>
+                            <option value="dairy">Dairy Products</option>
+                            <option value="personal">Personal Care</option>
+                            <option value="household">Household</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select" id="stockFilter">
+                            <option value="">All Stock</option>
+                            <option value="in_stock">In Stock</option>
+                            <option value="low_stock">Low Stock</option>
+                            <option value="out_of_stock">Out of Stock</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <button class="btn btn-secondary w-100" onclick="refreshProducts()">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Products Table -->
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Image</th>
+                                        <th>Product Name</th>
+                                        <th>Category</th>
+                                        <th>Price</th>
+                                        <th>Stock</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productsTable">
+                                    <!-- Products will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Orders Tab -->
+            <div class="tab-pane fade" id="orders" role="tabpanel">
+                <div class="d-flex justify-content-between align-items-center my-4">
+                    <h2>Orders Management</h2>
+                    <div>
+                        <select class="form-select d-inline-block w-auto me-2" id="orderStatusFilter">
+                            <option value="all">All Orders</option>
+                            <option value="pending">Pending</option>
+                            <option value="confirmed">Confirmed</option>
+                            <option value="delivered">Delivered</option>
+                            <option value="cancelled">Cancelled</option>
+                        </select>
+                        <button class="btn btn-success" onclick="refreshOrders()">
+                            <i class="fas fa-sync"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Order ID</th>
+                                        <th>Customer</th>
+                                        <th>Phone</th>
+                                        <th>Items</th>
+                                        <th>Total</th>
+                                        <th>Time</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="ordersTable">
+                                    <!-- Orders will be loaded here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Analytics Tab -->
+            <div class="tab-pane fade" id="analytics" role="tabpanel">
+                <h2 class="my-4">Business Analytics</h2>
+                
+                <!-- Stats Cards -->
+                <div class="row mb-4">
+                    <div class="col-md-3">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Products</h5>
+                                <h2 id="totalProducts">0</h2>
+                                <i class="fas fa-boxes fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Total Orders</h5>
+                                <h2 id="totalOrders">0</h2>
+                                <i class="fas fa-shopping-cart fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Today's Revenue</h5>
+                                <h2 id="todayRevenue">₹0</h2>
+                                <i class="fas fa-rupee-sign fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-info text-white">
+                            <div class="card-body">
+                                <h5 class="card-title">Pending Orders</h5>
+                                <h2 id="pendingOrders">0</h2>
+                                <i class="fas fa-clock fa-2x"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts Section -->
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Top Selling Products</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="topProducts">
+                                    <!-- Top products will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Recent Orders</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="recentOrders">
+                                    <!-- Recent orders will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-pane fade" id="settings" role="tabpanel">
+                <h2 class="my-4">Store Settings</h2>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>General Settings</h5>
+                            </div>
+                            <div class="card-body">
+                                <form id="settingsForm">
+                                    <div class="mb-3">
+                                        <label class="form-label">Store Name</label>
+                                        <input type="text" class="form-control" id="storeName" value="Aai Ji General Store">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Store Phone</label>
+                                        <input type="tel" class="form-control" id="storePhone" placeholder="+91 98765 43210">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Store Email</label>
+                                        <input type="email" class="form-control" id="storeEmail" placeholder="store@example.com">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Store Address</label>
+                                        <textarea class="form-control" id="storeAddress" rows="3">Main Road, Your City, PIN: 123456</textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Minimum Order Amount (₹)</label>
+                                        <input type="number" class="form-control" id="minOrderAmount" value="500">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Delivery Radius (km)</label>
+                                        <input type="number" class="form-control" id="deliveryRadius" value="5">
+                                    </div>
+                                    <button type="button" class="btn btn-success" onclick="saveSettings()">
+                                        <i class="fas fa-save"></i> Save Settings
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Delivery Areas</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="deliveryAreas">
+                                    <div class="mb-3">
+                                        <label class="form-label">Area Name</label>
+                                        <input type="text" class="form-control" id="areaName" placeholder="e.g., Main Road">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Distance Range</label>
+                                        <input type="text" class="form-control" id="areaRange" placeholder="e.g., 0-2km">
+                                    </div>
+                                    <button class="btn btn-primary" onclick="addDeliveryArea()">
+                                        <i class="fas fa-plus"></i> Add Area
+                                    </button>
+                                    <div id="areasList" class="mt-3">
+                                        <!-- Areas will be listed here -->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Product Modal -->
+    <div class="modal fade" id="addProductModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalTitle">Add New Product</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <input type="hidden" id="productId">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="mb-3">
+                                    <label class="form-label">Product Name *</label>
+                                    <input type="text" class="form-control" id="productName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Category *</label>
+                                    <select class="form-select" id="productCategory" required>
+                                        <option value="">Select Category</option>
+                                        <option value="grains">Grains & Staples</option>
+                                        <option value="dals">Dals & Pulses</option>
+                                        <option value="oil">Oil & Ghee</option>
+                                        <option value="spices">Spices & Masala</option>
+                                        <option value="snacks">Snacks & Foods</option>
+                                        <option value="beverages">Beverages</option>
+                                        <option value="dairy">Dairy Products</option>
+                                        <option value="personal">Personal Care</option>
+                                        <option value="household">Household</option>
+                                    </select>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Price (₹) *</label>
+                                            <input type="number" class="form-control" id="productPrice" step="0.01" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Unit *</label>
+                                            <input type="text" class="form-control" id="productUnit" placeholder="e.g., 1kg, 500g, 1L" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Stock Quantity *</label>
+                                            <input type="number" class="form-control" id="productStock" required>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Minimum Stock Level</label>
+                                            <input type="number" class="form-control" id="productMinStock" value="10">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Description</label>
+                                    <textarea class="form-control" id="productDescription" rows="3" placeholder="Product description..."></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Product Image</label>
+                                    <div class="text-center">
+                                        <img id="productImagePreview" src="https://picsum.photos/seed/default/300/300.jpg" alt="Product" class="img-fluid mb-3" style="max-height: 200px;">
+                                        <input type="file" class="form-control" id="productImage" accept="image/*" onchange="previewImage(event)">
+                                        <small class="text-muted">Upload product image</small>
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Barcode (Optional)</label>
+                                    <input type="text" class="form-control" id="productBarcode" placeholder="Scan or enter barcode">
+                                </div>
+                                <div class="mb-3">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="productActive" checked>
+                                        <label class="form-check-label" for="productActive">
+                                            Product is Active
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProduct()">
+                        <i class="fas fa-save"></i> Save Product
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div class="modal fade" id="orderDetailsModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Order Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="orderDetails">
+                        <!-- Order details will be loaded here -->
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="admin-dashboard.js"></script>
+</body>
+</html>
